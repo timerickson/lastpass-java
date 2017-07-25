@@ -18,7 +18,7 @@ public class Blob
         this.keyIterationCount = keyIterationCount;
     }
 
-    public byte[] MakeEncryptionKey(String username, String password) {
+    public byte[] makeEncryptionKey(String username, String password) {
         return new FetcherHelper(ioc).makeKey(username, password, keyIterationCount);
     }
 

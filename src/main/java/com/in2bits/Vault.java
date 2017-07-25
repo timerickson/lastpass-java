@@ -31,11 +31,11 @@ public class Vault
         return new Vault(ioc, blob, blob.MakeEncryptionKey(username, password));
     }
 
-//    public static Blob Download(String username, String password) throws FetchException, LoginException, IOException {
-//        return Download(username, password, null);
-//    }
+    public static Blob Download(Ioc ioc, String username, String password) throws FetchException, LoginException {
+        return Download(ioc, username, password, null);
+    }
 
-    private static Blob Download(Ioc ioc, String username, String password, String multifactorPassword) throws FetchException, LoginException {
+    public static Blob Download(Ioc ioc, String username, String password, String multifactorPassword) throws FetchException, LoginException {
         Fetcher fetcher = new Fetcher(ioc);
         return fetcher.Fetch(fetcher.Login(username, password, multifactorPassword));
     }

@@ -124,7 +124,7 @@ class ParserHelper
         byte[] asn1EncodedKey = Extensions.Strings.decodeHex(decrypted.substring(header.length(),
                 decrypted.length() - header.length() - footer.length()));
 
-        KeyValuePair<Asn1.Kind, byte[]> enclosingSequence = asn1.ParseItem(asn1EncodedKey);
+        KeyValuePair<Asn1.Kind, byte[]> enclosingSequence = asn1.parseItem(asn1EncodedKey);
         KeyValuePair<Asn1.Kind, byte[]> anotherEnclosingSequence = WithBytes(enclosingSequence.getValue(), new Func<DataInputStream, KeyValuePair<Asn1.Kind, byte[]>>() {
             @Override
             public KeyValuePair<Asn1.Kind, byte[]> execute(DataInputStream reader) throws IOException {
@@ -133,7 +133,7 @@ class ParserHelper
                     return asn1.ExtractItem(reader);
             }
         });
-        KeyValuePair<Asn1.Kind, byte[]> yetAnotherEnclosingSequence = asn1.ParseItem(anotherEnclosingSequence.getValue());
+        KeyValuePair<Asn1.Kind, byte[]> yetAnotherEnclosingSequence = asn1.parseItem(anotherEnclosingSequence.getValue());
 
         return WithBytes(yetAnotherEnclosingSequence.getValue(), new Func<DataInputStream, RSAParameters>(){
             @Override
@@ -373,10 +373,10 @@ class ParserHelper
 
     public String DecryptAes256CbcPlain(byte[] data, byte[] encryptionKey)
     {
-        return DecryptAes256(Arrays.copyOfRange(data, 17, data.length - 1),
+        return DecryptAes256(Arrays.copyOfRange(data, 17, data.length),
                 encryptionKey,
                 CipherMode.CBC,
-                Arrays.copyOfRange(data, 1, 16));
+                Arrays.copyOfRange(data, 1, 17));
     }
 
     public String DecryptAes256CbcBase64(byte[] data, byte[] encryptionKey) throws UnsupportedEncodingException {

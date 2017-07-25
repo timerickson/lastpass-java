@@ -29,7 +29,7 @@ class Asn1
         this.parserHelper = parserHelper;
     }
 
-    public KeyValuePair<Kind, byte[]> ParseItem(byte[] bytes) {
+    public KeyValuePair<Kind, byte[]> parseItem(byte[] bytes) {
         return parserHelper.WithBytes(bytes, new Func<DataInputStream, KeyValuePair<Kind, byte[]>>() {
             @Override
             public KeyValuePair<Kind, byte[]> execute(DataInputStream reader) {
