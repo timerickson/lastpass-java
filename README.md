@@ -10,11 +10,11 @@ There is a low level API which is used to fetch the data from the LastPass serve
 
 A quick example of accessing your account information:
 
-using LastPass;
-
+```
 Vault vault = Vault.Create(username, password);
 for (Account i : vault.getAccounts())
     System.out.println("%s: %s, %s", i.getName(), i.getUsername(), i.getPassword());
+```
 
 The blob received from LastPass could be safely stored locally (it's well encrypted) and reused later on.
 Contributing
