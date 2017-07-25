@@ -1,16 +1,12 @@
 package com.in2bits.debug;
 
 import com.in2bits.Blob;
-import com.in2bits.FetchException;
-import com.in2bits.LoginException;
-import com.in2bits.ParseException;
 import com.in2bits.Vault;
 import com.in2bits.adapters.crypto.AesManagedFactory;
 import com.in2bits.shims.Ioc;
 import com.in2bits.shims.WebClientFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,6 +25,15 @@ public class Driver {
         String username = "yourlastpassemail@domain.tld";
         String password = "your master password";
         String otp = "123456";
+        if (args.length > 2) {
+            otp = args[2];
+        }
+        if (args.length > 1) {
+            password = args[1];
+        }
+        if (args.length > 0) {
+            username = args[0];
+        }
         try {
 //            Vault vault = Create(ioc, username, password, otp);
 //            downloadBlob(ioc, username, password, otp);
