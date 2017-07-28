@@ -13,6 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class Asn1Test
@@ -87,9 +88,9 @@ public class Asn1Test
 
     private void ParseDeadBeefItem(byte tag, Asn1.Kind kind)
     {
-        KeyValuePair<Asn1.Kind, byte[]> item = asn1.parseItem(Extensions.Strings.decodeHex(String.format("{0:X2}04DEADBEEF", tag)));
+        KeyValuePair<Asn1.Kind, byte[]> item = asn1.parseItem(Extensions.Strings.decodeHex(String.format("%02X04DEADBEEF", tag)));
         assertEquals(kind, item.getKey());
-        assertEquals(new byte[] {(byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF}, item.getValue());
+        assertArrayEquals(new byte[] {(byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF}, item.getValue());
     }
 
     private static String Repeat(String s, int times)

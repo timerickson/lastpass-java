@@ -9,9 +9,10 @@ import com.in2bits.shims.Ioc;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-class BlobTest
+public class BlobTest
 {
     private static final byte[] Bytes = Extensions.Strings.decode64(new TestBase64Decoder(), "TFBBVgAAAAMxMjJQUkVNAAAACjE0MTQ5");
     private final int IterationCount = 500;
@@ -38,6 +39,6 @@ class BlobTest
     public void Blob_MakeEncryptionKey()
     {
         byte[] key = new Blob(ioc, Bytes, IterationCount).makeEncryptionKey(Username, Password);
-        assertEquals(EncryptionKey, key);
+        assertArrayEquals(EncryptionKey, key);
     }
 }

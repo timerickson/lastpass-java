@@ -28,7 +28,7 @@ public class Vault
 
     // TODO: Make a test for this!
     public static Vault Create(Ioc ioc, Blob blob, String username, String password) throws ParseException {
-        return new Vault(ioc, blob, blob.MakeEncryptionKey(username, password));
+        return new Vault(ioc, blob, blob.makeEncryptionKey(username, password));
     }
 
     public static Blob Download(Ioc ioc, String username, String password) throws FetchException, LoginException {

@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface WebClient extends Closeable {
     void addHeader(String name, String value);
+    Map<String, String> getHeaders();
     byte[] downloadData(String uri) throws WebException;
     byte[] uploadValues(String uri, List<KeyValuePair<String, String>> values) throws WebException;
 }

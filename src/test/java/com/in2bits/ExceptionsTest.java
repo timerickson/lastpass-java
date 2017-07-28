@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-class ExceptionsTest
+public class ExceptionsTest
 {
     private final String _message = "message";
     private final Exception _innerException = new Exception();

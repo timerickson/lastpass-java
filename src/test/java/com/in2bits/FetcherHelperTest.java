@@ -17,7 +17,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-class FetcherHelperTest
+public class FetcherHelperTest
 {
     @Rule
     public ExpectedException thrown = ExpectedException.none();

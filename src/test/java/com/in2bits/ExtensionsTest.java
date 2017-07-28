@@ -16,9 +16,10 @@ import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-class ExtensionsTest
+public class ExtensionsTest
 {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -66,8 +67,8 @@ class ExtensionsTest
     @Test
     public void ToBytes() throws Exception
     {
-        assertEquals(new byte[] {}, Extensions.Strings.toBytes(""));
-        assertEquals(_helloUtf8Bytes, Extensions.Strings.toBytes(_helloUtf8));
+        assertArrayEquals(new byte[] {}, Extensions.Strings.toBytes(""));
+        assertArrayEquals(_helloUtf8Bytes, Extensions.Strings.toBytes(_helloUtf8));
     }
 
     @Test
@@ -75,8 +76,8 @@ class ExtensionsTest
     {
         for (Map.Entry<String, byte[]> i : _hexToBytes.entrySet())
         {
-            assertEquals(i.getValue(), Extensions.Strings.decodeHex(i.getKey()));
-            assertEquals(i.getValue(), Extensions.Strings.decodeHex(i.getKey().toUpperCase()));
+            assertArrayEquals(i.getValue(), Extensions.Strings.decodeHex(i.getKey()));
+            assertArrayEquals(i.getValue(), Extensions.Strings.decodeHex(i.getKey().toUpperCase()));
         }
     }
 
@@ -100,11 +101,11 @@ class ExtensionsTest
     public void Decode64()
     {
         Base64Decoder decoder = new TestBase64Decoder();
-        assertEquals(new byte[] {}, Extensions.Strings.decode64(decoder, ""));
-        assertEquals(new byte[] {0x61}, Extensions.Strings.decode64(decoder, "YQ=="));
-        assertEquals(new byte[] {0x61, 0x62}, Extensions.Strings.decode64(decoder, "YWI="));
-        assertEquals(new byte[] {0x61, 0x62, 0x63}, Extensions.Strings.decode64(decoder, "YWJj"));
-        assertEquals(new byte[] {0x61, 0x62, 0x63, 0x64}, Extensions.Strings.decode64(decoder, "YWJjZA=="));
+        assertArrayEquals(new byte[] {}, Extensions.Strings.decode64(decoder, ""));
+        assertArrayEquals(new byte[] {0x61}, Extensions.Strings.decode64(decoder, "YQ=="));
+        assertArrayEquals(new byte[] {0x61, 0x62}, Extensions.Strings.decode64(decoder, "YWI="));
+        assertArrayEquals(new byte[] {0x61, 0x62, 0x63}, Extensions.Strings.decode64(decoder, "YWJj"));
+        assertArrayEquals(new byte[] {0x61, 0x62, 0x63, 0x64}, Extensions.Strings.decode64(decoder, "YWJjZA=="));
     }
 
     @Test

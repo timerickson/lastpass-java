@@ -31,6 +31,11 @@ public class SimpleWebClient implements WebClient {
         requestHeaders.put(name, value);
     }
 
+    @Override
+    public Map<String, String> getHeaders() {
+        return requestHeaders;
+    }
+
     private void addHeaders() {
         for (String name : requestHeaders.keySet()) {
             conn.setRequestProperty(name, requestHeaders.get(name));

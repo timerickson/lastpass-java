@@ -73,7 +73,10 @@ class Asn1
             size = 0;
             for (int i = 0; i < sizeLength; ++i)
             {
-                byte oneByte = reader.readByte();
+                int oneByte = reader.readByte();
+                if (oneByte < 0) {
+                    oneByte *= -1;
+                }
                 size = size * 256 + oneByte;
             }
         }
