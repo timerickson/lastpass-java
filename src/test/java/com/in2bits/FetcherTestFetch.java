@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -20,11 +22,13 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,7 +39,7 @@ public class FetcherTestFetch extends FetcherTest
     // Shared data
     //
 
-    private final static String AccountDownloadUrl = "https://lastpass.com/getaccts.php?mobile=1&b64=1&hash=0.0&hasplugin=3.0.23&requestsrc=android";
+    private final static String AccountDownloadUrl = "https://lastpass.com/getaccts.php?mobile=1&hash=0.0&hasplugin=3.0.23&requestsrc=android";
     private static final Session Session = new Session(SessionId, IterationCount);
     private final static String FetchResponse = "VGVzdCBibG9i";
     private static final byte[] Blob = "Test blob".getBytes();
@@ -72,7 +76,7 @@ public class FetcherTestFetch extends FetcherTest
         Ref<Blob> blobRef = new Ref<>();
         SuccessfullyFetch(blobRef);
 
-        assertEquals(Blob, blobRef.getValue().getBytes());
+        assertArrayEquals(Blob, blobRef.getValue().getBytes());
         assertEquals(IterationCount, blobRef.getValue().getKeyIterationCount());
     }
 
@@ -81,13 +85,6 @@ public class FetcherTestFetch extends FetcherTest
         FetchAndVerifyException(new ResponseOrException(new WebException(null, null)),
             WebException.class, FetchException.FailureReason.WebException,
             WebExceptionMessage);
-    }
-
-        @Test
-    public void Fetch_throws_on_invalid_response() throws WebException {
-        FetchAndVerifyException(new ResponseOrException("Invalid base64 String!"),
-            IllegalArgumentException.class, FetchException.FailureReason.InvalidResponse,
-            "Invalid base64 in response");
     }
 
     //
@@ -102,9 +99,16 @@ public class FetcherTestFetch extends FetcherTest
                                                Map<String, String> headers) throws WebException {
         WebClient webClient = mock(WebClient.class);
 
-        when(webClient.getHeaders()).thenReturn(headers == null ?
-            new HashMap<String, String>() :
-            headers);
+        final Map<String, String> mockHeaders = headers == null ? new HashMap<String, String>() : headers;
+        when(webClient.getHeaders()).thenReturn(mockHeaders);
+
+        doAnswer(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock iom) {
+                mockHeaders.put((String)iom.getArguments()[0], (String)iom.getArguments()[1]);
+                return null;
+            }
+        }).when(webClient).addHeader(anyString(), anyString());
 
         responseOrException.returnOrThrow(when(webClient.downloadData(anyString())));
 
@@ -129,7 +133,7 @@ public class FetcherTestFetch extends FetcherTest
 
     private WebClient SuccessfullyFetch(Ref<Blob> blobRef, Map<String, String> headers)
             throws WebException, UnsupportedEncodingException, FetchException {
-        WebClient webClient = SetupFetch(new ResponseOrException(FetchResponse), headers);
+        WebClient webClient = SetupFetch(new ResponseOrException(Blob, null), headers);
         blobRef.setValue(fetcher.Fetch(Session, webClient));
         return webClient;
     }

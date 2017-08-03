@@ -7,6 +7,8 @@ import com.in2bits.shims.WebClient;
 
 import org.mockito.stubbing.OngoingStubbing;
 
+import java.io.UnsupportedEncodingException;
+
 abstract class FetcherTest
 {
     //
@@ -22,12 +24,21 @@ abstract class FetcherTest
     {
         public ResponseOrException(String response)
         {
-            this(response.getBytes(), null);
+            this(response, null);
         }
 
         public ResponseOrException(Exception exception)
         {
-            this(null, exception);
+            this((byte[])null, exception);
+        }
+
+        public ResponseOrException(String response, Exception exception) {
+            try {
+                _response = response.getBytes("UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("Encoding error", e);
+            }
+            _exception = exception;
         }
 
         public ResponseOrException(byte[] response, Exception exception) {

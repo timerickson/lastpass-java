@@ -25,31 +25,6 @@ public class ExtensionsTest
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void Reverse()
-    {
-        assertEquals(0L, Extensions.Uint.reverse(0));
-        assertEquals(0xffL, Extensions.Uint.reverse(0xff000000));
-        assertEquals(0xff000000L, Extensions.Uint.reverse(0xff));
-        assertEquals(0xff00ff00L, Extensions.Uint.reverse(0xff00ff));
-        assertEquals(0x78563412L, Extensions.Uint.reverse(0x12345678));
-        assertEquals(0xdeadbeefL, Extensions.Uint.reverse(0xefbeadde));
-    }
-
-    private long bytesToLong(byte[] bytes) {
-        ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN);
-        buffer.put(bytes, 0, Long.SIZE);
-        return buffer.getLong();
-    }
-
-    @Test
-    public void FromBigEndian()
-    {
-        assertEquals(0L, Extensions.Uint.fromBigEndian(bytesToLong(new byte[] {0x00, 0x00, 0x00, 0x00})));
-        assertEquals(0x12345678L, Extensions.Uint.fromBigEndian(bytesToLong(new byte[] {0x12, 0x34, 0x56, 0x78})));
-        assertEquals(0xdeadbeefL, Extensions.Uint.fromBigEndian(bytesToLong(new byte[] {(byte) 0xDE, (byte) 0xad, (byte) 0xbe, (byte) 0xef})));
-    }
-
-    @Test
     public void ToUtf8()
     {
         assertEquals("", Extensions.Bytes.toUtf8(new byte[] {}));

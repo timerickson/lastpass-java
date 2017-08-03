@@ -21,7 +21,6 @@ public class StubHmacSHA256 implements HmacSHA256 {
     public StubHmacSHA256() {
         try {
             mac = Mac.getInstance("HmacSHA256");
-            System.out.println("Mac Length " + mac.getMacLength());
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Crypto Error: No Such Algorithm HMAC SHA256", e);
         }

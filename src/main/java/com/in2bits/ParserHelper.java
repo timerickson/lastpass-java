@@ -297,7 +297,7 @@ class ParserHelper
     public int ReadSize(DataInputStream reader)
     {
         try {
-            return (int) Extensions.Uint.fromBigEndian(reader.readInt());
+            return reader.readInt();
         } catch (IOException e) {
             throw new RuntimeException("ParserHelper.ReadSize", e);
         }

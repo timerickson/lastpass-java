@@ -23,7 +23,7 @@ public class ExceptionsTest
     {
         BaseException e = new BaseException(_message);
         assertEquals(_message, e.getMessage());
-        assertNotNull(e.getCause());
+        assertNull(e.getCause());
     }
 
     @Test

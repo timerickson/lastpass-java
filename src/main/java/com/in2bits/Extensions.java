@@ -10,18 +10,6 @@ import java.io.UnsupportedEncodingException;
 
 abstract class Extensions
 {
-    public static class Uint {
-        public static long reverse(long x)
-        {
-            return ((x & 0xff) << 24) | ((x & 0xff00) << 8) | ((x & 0xff0000) >> 8) | ((x & 0xff000000) >> 24);
-        }
-
-        public static long fromBigEndian(long x)
-        {
-            return /* Java is BigEndian BitConverter.IsLittleEndian ? x.Reverse() :*/ x;
-        }
-    }
-
     public static class Bytes {
         public static String toUtf8(byte[] x)
         {
