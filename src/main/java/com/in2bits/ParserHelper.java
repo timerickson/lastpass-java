@@ -8,7 +8,7 @@ import com.in2bits.adapters.crypto.AesManaged;
 import com.in2bits.adapters.crypto.AesManagedFactory;
 import com.in2bits.debug.SimpleRSACryptoServiceProvider;
 import com.in2bits.shims.CipherMode;
-import com.in2bits.shims.Func;
+import com.in2bits.shims.Func1;
 import com.in2bits.shims.Func2;
 import com.in2bits.shims.Ioc;
 import com.in2bits.shims.KeyValuePair;
@@ -67,7 +67,7 @@ class ParserHelper
     {
         assert(chunk.getId().equals("ACCT"));
 
-        return WithBytes(chunk.getPayload(), new Func<DataInputStream, Account>() {
+        return WithBytes(chunk.getPayload(), new Func1<DataInputStream, Account>() {
             @Override
             public Account execute(DataInputStream reader) throws IOException {
                 String placeholder = "decryption failed";
@@ -125,7 +125,7 @@ class ParserHelper
                 decrypted.length() - header.length() - footer.length()));
 
         KeyValuePair<Asn1.Kind, byte[]> enclosingSequence = asn1.parseItem(asn1EncodedKey);
-        KeyValuePair<Asn1.Kind, byte[]> anotherEnclosingSequence = WithBytes(enclosingSequence.getValue(), new Func<DataInputStream, KeyValuePair<Asn1.Kind, byte[]>>() {
+        KeyValuePair<Asn1.Kind, byte[]> anotherEnclosingSequence = WithBytes(enclosingSequence.getValue(), new Func1<DataInputStream, KeyValuePair<Asn1.Kind, byte[]>>() {
             @Override
             public KeyValuePair<Asn1.Kind, byte[]> execute(DataInputStream reader) throws IOException {
                     asn1.ExtractItem(reader);
@@ -135,7 +135,7 @@ class ParserHelper
         });
         KeyValuePair<Asn1.Kind, byte[]> yetAnotherEnclosingSequence = asn1.parseItem(anotherEnclosingSequence.getValue());
 
-        return WithBytes(yetAnotherEnclosingSequence.getValue(), new Func<DataInputStream, RSAParameters>(){
+        return WithBytes(yetAnotherEnclosingSequence.getValue(), new Func1<DataInputStream, RSAParameters>(){
             @Override
             public RSAParameters execute(DataInputStream reader) throws IOException {
                 asn1.ExtractItem(reader);
@@ -168,7 +168,7 @@ class ParserHelper
     public SharedFolder Parse_SHAR(Chunk chunk, final byte[] encryptionKey, final RSAParameters rsaKey) {
         assert(chunk.getId() == "SHAR");
 
-        return WithBytes(chunk.getPayload(), new Func<DataInputStream, SharedFolder>() {
+        return WithBytes(chunk.getPayload(), new Func1<DataInputStream, SharedFolder>() {
             @Override
             public SharedFolder execute(DataInputStream reader) throws IOException {
                 String id = Extensions.Bytes.toUtf8(ReadItem(reader));
@@ -411,7 +411,7 @@ class ParserHelper
     }
 
     public void WithBytes(byte[] bytes, final TAction<DataInputStream> action) {
-        WithBytes(bytes, new Func<DataInputStream, Integer>(){
+        WithBytes(bytes, new Func1<DataInputStream, Integer>(){
             @Override
             public Integer execute(DataInputStream reader) {
                 action.execute(reader);
@@ -420,7 +420,7 @@ class ParserHelper
         });
     }
 
-    public <TResult> TResult WithBytes(byte[] bytes, Func<DataInputStream, TResult> action) {
+    public <TResult> TResult WithBytes(byte[] bytes, Func1<DataInputStream, TResult> action) {
         try (ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
              DataInputStream reader = new DataInputStream(stream)) {
             return action.execute(reader);

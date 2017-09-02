@@ -9,7 +9,7 @@ import org.mockito.stubbing.OngoingStubbing;
 
 import java.io.UnsupportedEncodingException;
 
-abstract class FetcherTest
+class FetcherTest
 {
     //
     // Data shared between Login and Fetcher tests
@@ -46,12 +46,12 @@ abstract class FetcherTest
             _exception = exception;
         }
 
-        public void returnOrThrow(OngoingStubbing<byte[]> setup)
+        public OngoingStubbing<byte[]> returnOrThrow(OngoingStubbing<byte[]> setup)
         {
             if (_exception != null)
-                setup.thenThrow(_exception);
+                return setup.thenThrow(_exception);
             else
-                setup.thenReturn(_response);
+                return setup.thenReturn(_response);
         }
 
 //        public void returnOrThrow(ISetupSequentialResult<byte[]> setup)

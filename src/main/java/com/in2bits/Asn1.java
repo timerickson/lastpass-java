@@ -3,9 +3,8 @@ package com.in2bits;
 // Copyright (C) 2013 Dmitry Yakimenko (detunized@gmail.com).
 // Licensed under the terms of the MIT license. See LICENCE for details.
 
-import com.in2bits.shims.Func;
+import com.in2bits.shims.Func1;
 import com.in2bits.shims.KeyValuePair;
-import com.in2bits.shims.TAction;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -30,7 +29,7 @@ class Asn1
     }
 
     public KeyValuePair<Kind, byte[]> parseItem(byte[] bytes) {
-        return parserHelper.WithBytes(bytes, new Func<DataInputStream, KeyValuePair<Kind, byte[]>>() {
+        return parserHelper.WithBytes(bytes, new Func1<DataInputStream, KeyValuePair<Kind, byte[]>>() {
             @Override
             public KeyValuePair<Kind, byte[]> execute(DataInputStream reader) {
                 try {

@@ -24,7 +24,7 @@ class FetcherHelper
         {
             try (SHA256Managed sha = ioc.get(SHA256Managed.class))
             {
-                return sha.computeHash((username + password).getBytes());
+                return sha.computeHash((username + password).getBytes("UTF-8"));
             } catch (IOException e) {
                 throw new RuntimeException("FetcherHelper.makeKey", e);
             }

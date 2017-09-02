@@ -4,7 +4,10 @@ package com.in2bits;
 // Licensed under the terms of the MIT license. See LICENCE for details.
 
 import com.in2bits.adapters.Base64Decoder;
+import com.in2bits.adapters.crypto.SHA256Managed;
 import com.in2bits.debug.SimpleIoc;
+import com.in2bits.debug.SimpleSha256Managed;
+import com.in2bits.shims.Func;
 import com.in2bits.shims.Ioc;
 
 import org.junit.Before;
@@ -29,6 +32,12 @@ public class FetcherHelperTest
     @Before
     public void before() {
         Ioc ioc = new SimpleIoc();
+        ioc.register(SHA256Managed.class, new Func<SHA256Managed>(){
+            @Override
+            public SHA256Managed execute() {
+                return new SimpleSha256Managed();
+            }
+        });
         fetcherHelper = new FetcherHelper(ioc);
     }
 
@@ -36,7 +45,7 @@ public class FetcherHelperTest
     public void MakeKey()
     {
         Map<Integer, String> testCases = new HashMap<>();
-//        testCases.put(1, "C/Bh2SGWxI8JDu54DbbpV8J9wa6pKbesIb9MAXkeF3Y=");
+        testCases.put(1, "C/Bh2SGWxI8JDu54DbbpV8J9wa6pKbesIb9MAXkeF3Y=");
         testCases.put(5, "pE9goazSCRqnWwcixWM4NHJjWMvB5T15dMhe6ug1pZg=");
         testCases.put(10, "n9S0SyJdrMegeBHtkxUx8Lzc7wI6aGl+y3/udGmVey8=");
         testCases.put(50, "GwI8/kNy1NjIfe3Z0VAZfF78938UVuCi6xAL3MJBux0=");
@@ -71,7 +80,7 @@ public class FetcherHelperTest
     public void MakeHash()
     {
         Map<Integer, String> testCases = new HashMap<>();
-//        testCases.put(1, "a1943cfbb75e37b129bbf78b9baeab4ae6dd08225776397f66b8e0c7a913a055");
+        testCases.put(1, "a1943cfbb75e37b129bbf78b9baeab4ae6dd08225776397f66b8e0c7a913a055");
         testCases.put(5, "a95849e029a7791cfc4503eed9ec96ab8675c4a7c4e82b00553ddd179b3d8445");
         testCases.put(10, "0da0b44f5e6b7306f14e92de6d629446370d05afeb1dc07cfcbe25f169170c16");
         testCases.put(50, "1d5bc0d636da4ad469cefe56c42c2ff71589facb9c83f08fcf7711a7891cc159");
