@@ -7,6 +7,7 @@ import com.in2bits.adapters.Base64Decoder;
 import com.in2bits.adapters.crypto.AesManaged;
 import com.in2bits.adapters.crypto.AesManagedFactory;
 import com.in2bits.debug.SimpleRSACryptoServiceProvider;
+import com.in2bits.shims.Action1;
 import com.in2bits.shims.CipherMode;
 import com.in2bits.shims.Func1;
 import com.in2bits.shims.Func2;
@@ -15,7 +16,6 @@ import com.in2bits.shims.KeyValuePair;
 import com.in2bits.adapters.crypto.RSACryptoServiceProvider;
 import com.in2bits.shims.RSAParameters;
 import com.in2bits.shims.Ref;
-import com.in2bits.shims.TAction;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -56,6 +56,10 @@ class ParserHelper
         public byte[] getPayload() {
             return payload;
         }
+    }
+
+    public Account Parse_ACCT(Chunk chunk, final byte[] encryptionKey) {
+        return Parse_ACCT(chunk, encryptionKey, null);
     }
 
     // May return null when the chunk does not represent an account.
@@ -410,10 +414,10 @@ class ParserHelper
         }
     }
 
-    public void WithBytes(byte[] bytes, final TAction<DataInputStream> action) {
+    public void WithBytes(byte[] bytes, final Action1<DataInputStream> action) {
         WithBytes(bytes, new Func1<DataInputStream, Integer>(){
             @Override
-            public Integer execute(DataInputStream reader) {
+            public Integer execute(DataInputStream reader) throws IOException {
                 action.execute(reader);
                 return 0;
             };

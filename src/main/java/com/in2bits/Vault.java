@@ -4,10 +4,10 @@ package com.in2bits;
 // Licensed under the terms of the MIT license. See LICENCE for details.
 
 
+import com.in2bits.shims.Action1;
 import com.in2bits.shims.Ioc;
 import com.in2bits.shims.RSAParameters;
 import com.in2bits.shims.Ref;
-import com.in2bits.shims.TAction;
 
 import java.io.DataInputStream;
 import java.io.UnsupportedEncodingException;
@@ -50,7 +50,7 @@ public class Vault
         final Ref<ParseException> exRef = new Ref<>();
         final Ref<Account[]> accountsRef = new Ref<>();
         final ParserHelper parserHelper = new ParserHelper(ioc);
-        parserHelper.WithBytes(blob.getBytes(), new TAction<DataInputStream>(){
+        parserHelper.WithBytes(blob.getBytes(), new Action1<DataInputStream>(){
             @Override
             public void execute(DataInputStream reader) {
                 List<ParserHelper.Chunk> chunks = parserHelper.ExtractChunks(reader);
